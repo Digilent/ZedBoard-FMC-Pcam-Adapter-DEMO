@@ -1,1 +1,0 @@
-add_hw_probe_enum -dict {0 eq6'u2 0_ eq6'u12 1 eq6'u6 1_ eq6'u13 2 eq6'u7 2_ eq6'u15 3 eq6'u5 3_ eq6'u14 4 eq6'u4 4_ eq6'u10} [get_hw_probes system_i/system_ila_0/U0/probe0_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"system_i/system_ila_0/U0/ila_lib"}]]

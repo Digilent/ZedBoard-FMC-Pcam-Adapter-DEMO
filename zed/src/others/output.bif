@@ -1,7 +1,0 @@
-//arch = zynq; split = false; format = BIN
-the_ROM_image:
-{
-	[bootloader].\fsbl\Release\fsbl.elf
-	.\system_wrapper_hw_platform_0\system_wrapper.bit
-	.\bist\Release\bist.elf
-}
