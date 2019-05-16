@@ -5,7 +5,7 @@ Description
 ------------
 
 This project demonstrates the usage of the FMC Pcam Adapter as an interface from one to four different Pcam cameras and the ZedBoard platform.
-The Video Stream from each different camera is getting in through the MIPI/FMC connectors and out through the mezzannine VGA port. For errors and feed-back messages, an uart interface is present.
+The Video Stream from each different camera is getting in through the MIPI/FMC connectors and out through the carrier VGA port. For errors and feed-back messages, an uart interface is present.
 
 First and foremost
 ------------------
