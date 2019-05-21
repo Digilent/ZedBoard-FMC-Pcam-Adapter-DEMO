@@ -38,15 +38,15 @@ Demo Setup
 7. In the toolbar at the top of the SDK window, select **File -> New -> Application Project**.
 8. Fill out the fields in the first page of the New Application Project Wizard as in the table below. Most of the listed values will be the wizard's defaults, but are included in the table for completeness.
 
-| Setting                                 | Value                                     |
-| --------------------------------------- | ----------------------------------------- |
-| Project Name                            | fmc_pcam_adapter_demo                     |
-| Use default location                    | Checked box                               |
-| OS Platform                             | standalone                                |
-| Target Hardware: Hardware Platform      | system_wrapper_hw_platform_0              |
-| Target Hardware: Processor              | (default)                                 |
-| Target Software: Language               | C++                                       |
-| Target Software: Board Support Package  | Create New (fmc_pcam_adapter_demo_bsp)    |
+| Setting                                 | Value                                              |
+| --------------------------------------- | -------------------------------------------------- |
+| Project Name                            | ZedBoard_FMC_Pcam_Adapter_DEMO                     |
+| Use default location                    | Checked box                                        |
+| OS Platform                             | standalone                                         |
+| Target Hardware: Hardware Platform      | system_wrapper_hw_platform_0                       |
+| Target Hardware: Processor              | (default)                                          |
+| Target Software: Language               | C++                                                |
+| Target Software: Board Support Package  | Create New (ZedBoard_FMC_Pcam_Adapter_DEMO_bsp)    |
 
 9. Click **Next**.
 10. From the list of template applications, select "Empty Application", then click **Finish**.
@@ -55,16 +55,16 @@ Demo Setup
 13. In the "Select an import wizard" pane of the window that pops up, expand **General** and select **File System**. Then click **Next**.
 14. Fill out the fields of the "File system" screen as in the table below. Most of the listed values will be the defaults, but are included in the table for completeness.
 
-| Setting                                                | Value                                                            |
-| -                                                      | -                                                                |
-| From directory                                         | \<archive extracted location\>/sdk_appsrc/fmc_pcam_adapter_demo  |
-| Files to import pane: pcam_vdmi_hdmi                   | Checked box                                                      |
-| Into folder                                            | fmc_pcam_adapter_demo/src                                        |
-| Options: Overwrite existing resources without warning  | Checked box                                                      |
-| Options: Create top-level folder                       | Unchecked box                                                    |
+| Setting                                                | Value                                                                     |
+| -                                                      | -                                                                         |
+| From directory                                         | \<archive extracted location\>/sdk_appsrc/ZedBoard_FMC_Pcam_Adapter_DEMO  |
+| Files to import pane: pcam_vdmi_hdmi                   | Checked box                                                               |
+| Into folder                                            | ZedBoard_FMC_Pcam_Adapter_DEMO/src                                        |
+| Options: Overwrite existing resources without warning  | Checked box                                                               |
+| Options: Create top-level folder                       | Unchecked box                                                             |
 
 15. Click **Finish**.
-16. Open a serial terminal application (such as TeraTerm) and connect it to the ZedVoard serial port, using a baud rate of 115200.
+16. Open a serial terminal application (such as TeraTerm) and connect it to the ZedBoard serial port, using a baud rate of 115200.
 17. In the toolbar at the top of the SDK window, select **Xilinx -> Program FPGA**. Leave all fields as their defaults and click "Program".
 18. In the Project Explorer pane, right click on the "fmc_pcam_adapter_demo" application project and select "Run As -> Launch on Hardware (System Debugger)".
 19. The application will now be running on the ZedBoard. If there are any unconnected cameras, the serial interface should print a message which signals the improper initialization. 
