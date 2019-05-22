@@ -76,7 +76,7 @@ Next Steps
 This demo can be used as a basis for other projects by modifying the hardware platform in the Vivado project's block design or by modifying the SDK application project.
 Check out the wiki page of the demo [here](https://reference.digilentinc.com/learn/programmable-logic/tutorials/zedboard-fmc-pcam-adapter-demo/start#download_and_launch_the_zedboard_fmc-pcam-adapter_demo).
 
-For technical support or questions, please post on the [Digilent Forum](forum.digilentinc.com).
+For technical support or questions, please post on the [Digilent Forum](https://forum.digilentinc.com/).
 
 Additional Notes
 ----------------
