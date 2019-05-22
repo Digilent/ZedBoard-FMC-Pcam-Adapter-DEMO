@@ -31,7 +31,7 @@ Demo Setup
 
 1. Download the most recent release ZIP archive ("FMC-Pcam-Adapter-2018.2-*.zip") from the repo's [releases page]().
 2. Extract the downloaded ZIP.
-3. Open the XPR project file, found at \<archive extracted location\>/vivado_proj/fmc_pcam_adapter_demo_project.xpr, included in the extracted release archive in Vivado 2018.2.
+3. Open the XPR project file, found at \<archive extracted location\>/vivado_proj/ZedBoard-FMC-Pcam-Adapter-DEMO.xpr, included in the extracted release archive in Vivado 2018.2.
 4. In the toolbar at the top of the Vivado window, select **File -> Export -> Export Hardware**. Select **\<Local to Project\>** as the Exported Location and make sure that the **Include bitstream** box is checked, then click **OK**.
 5. In the toolbar at the top of the Vivado window, select **File -> Launch SDK**. Select **\<Local to Project\>** as both the workspace location and exported location, then click **OK**.
 6. With Vivado SDK opened, wait for the hardware platform exported by Vivado to be imported.
@@ -50,7 +50,7 @@ Demo Setup
 
 9. Click **Next**.
 10. From the list of template applications, select "Empty Application", then click **Finish**.
-11. In the Project Explorer panel to the left of the SDK window, expand the new application project (named "fmc_pcam_adapter_demo").
+11. In the Project Explorer panel to the left of the SDK window, expand the new application project (named "ZedBoard_FMC_Pcam_Adapter_DEMO").
 12. Right click on the "src" subdirectory of the application project and select **Import**.
 13. In the "Select an import wizard" pane of the window that pops up, expand **General** and select **File System**. Then click **Next**.
 14. Fill out the fields of the "File system" screen as in the table below. Most of the listed values will be the defaults, but are included in the table for completeness.
@@ -74,7 +74,7 @@ Demo Setup
 Next Steps
 ----------
 This demo can be used as a basis for other projects by modifying the hardware platform in the Vivado project's block design or by modifying the SDK application project.
-Check out the wiki page of the demo [here]().
+Check out the wiki page of the demo [here](https://reference.digilentinc.com/learn/programmable-logic/tutorials/zedboard-fmc-pcam-adapter-demo/start#download_and_launch_the_zedboard_fmc-pcam-adapter_demo).
 
 For technical support or questions, please post on the [Digilent Forum](forum.digilentinc.com).
 
