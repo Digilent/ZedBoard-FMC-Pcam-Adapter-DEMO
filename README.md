@@ -66,7 +66,7 @@ Demo Setup
 15. Click **Finish**.
 16. Open a serial terminal application (such as TeraTerm) and connect it to the ZedBoard serial port, using a baud rate of 115200.
 17. In the toolbar at the top of the SDK window, select **Xilinx -> Program FPGA**. Leave all fields as their defaults and click "Program".
-18. In the Project Explorer pane, right click on the "fmc_pcam_adapter_demo" application project and select "Run As -> Launch on Hardware (System Debugger)".
+18. In the Project Explorer pane, right click on the "ZedBoard_FMC_Pcam_Adapter_DEMO" application project and select "Run As -> Launch on Hardware (System Debugger)".
 19. The application will now be running on the ZedBoard. If there are any unconnected cameras, the serial interface should print a message which signals the improper initialization. 
 20. If needed, create a first-stage bootloader (FSBL) using **File -> New -> Application Project** and choosing template **Zynq FSBL**.
 
