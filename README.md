@@ -1,4 +1,4 @@
-ZedBoard FMC-Pcam-Adapter DEMO
+ZedBoard FMC Pcam Adapter DEMO
 ------------------------------
 
 Description
