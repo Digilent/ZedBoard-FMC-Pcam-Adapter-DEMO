@@ -64,6 +64,9 @@ Demo Setup
 | Options: Create top-level folder                       | Unchecked box                                                             |
 
 15. Click **Finish**.
+
+**Note**: Users have reported some custom IP drivers missing from the hardware platform. Check the system_wrapper_hw_platform_0 project's drivers folder to ensure that the <code>MIPI_CSI_2_RX_v1_0</code>, <code>MIPI_D_PHY_RX_v1_0</code>, and <code>video_scaler_v1_0</code> drivers are present. If any of them are missing, they must be manually added to the workspace's software repositories. Click **Xilinx -> Repositories** in the menu bar at the top of the SDK window. For each missing driver, add a **New** local repository to the workspace, selecting "\<archive extracted location\>/vivado_proj/\<project name\>.ipdefs/vivado-library/ip/\<missing IP name\>/driver" as the repository directory. For more information, see [this thread](https://forums.xilinx.com/t5/Embedded-Development-Tools/Custom-IP-driver-not-present-on-BSP/td-p/902331) on the Xilinx Forums.
+
 16. Open a serial terminal application (such as TeraTerm) and connect it to the ZedBoard serial port, using a baud rate of 115200.
 17. In the toolbar at the top of the SDK window, select **Xilinx -> Program FPGA**. Leave all fields as their defaults and click "Program".
 18. In the Project Explorer pane, right click on the "ZedBoard_FMC_Pcam_Adapter_DEMO" application project and select "Run As -> Launch on Hardware (System Debugger)".
