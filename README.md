@@ -67,6 +67,7 @@ Demo Setup
 16. Click **Finish**.
 
 **Note**: Users have reported some custom IP drivers missing from the hardware platform. Check the system_wrapper_hw_platform_0 project's drivers folder to ensure that the <code>MIPI_CSI_2_RX_v1_0</code>, <code>MIPI_D_PHY_RX_v1_0</code>, and <code>video_scaler_v1_0</code> drivers are present. If any of them are missing, they must be manually added to the workspace's software repositories. Click **Xilinx -> Repositories** in the menu bar at the top of the SDK window. For each missing driver, add a **New** local repository to the workspace, selecting "\<archive extracted location\>/vivado_proj/\<project name\>.ipdefs/vivado-library/ip/\<missing IP name\>/driver" as the repository directory. For more information, see [this thread](https://forums.xilinx.com/t5/Embedded-Development-Tools/Custom-IP-driver-not-present-on-BSP/td-p/902331) on the Xilinx Forums.
+
 17. Right click on **Project Explorer->ZedBoard_FMC_Pcam_Adapter_DEMO_bsp** and click on **Board Support Package Settings**. There you should select drivers and make sure that the components lsited below have the needed drivers selected:
 
 | Component                               | Component Type                  | Driver                 |
