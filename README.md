@@ -32,11 +32,12 @@ Demo Setup
 1. Download the most recent release ZIP archive ("FMC-Pcam-Adapter-2018.2-*.zip") from the repo's [releases page]().
 2. Extract the downloaded ZIP.
 3. Open the XPR project file, found at \<archive extracted location\>/vivado_proj/ZedBoard-FMC-Pcam-Adapter-DEMO.xpr, included in the extracted release archive in Vivado 2018.2.
-4. In the toolbar at the top of the Vivado window, select **File -> Export -> Export Hardware**. Select **\<Local to Project\>** as the Exported Location and make sure that the **Include bitstream** box is checked, then click **OK**.
-5. In the toolbar at the top of the Vivado window, select **File -> Launch SDK**. Select **\<Local to Project\>** as both the workspace location and exported location, then click **OK**.
-6. With Vivado SDK opened, wait for the hardware platform exported by Vivado to be imported.
-7. In the toolbar at the top of the SDK window, select **File -> New -> Application Project**.
-8. Fill out the fields in the first page of the New Application Project Wizard as in the table below. Most of the listed values will be the wizard's defaults, but are included in the table for completeness.
+4. In the **Project Manager** window click **Generate Bitsream** and then click **OK**. Now wait for the bitstream to be created. This could take a while, depending on the performance of your computer. When the generation of the bitstream is completed a popup windows should appear. Click **Cancel** in the window.
+5. In the toolbar at the top of the Vivado window, select **File -> Export -> Export Hardware**. Select **\<Local to Project\>** as the Exported Location and make sure that the **Include bitstream** box is checked, then click **OK**.
+6. In the toolbar at the top of the Vivado window, select **File -> Launch SDK**. Select **\<Local to Project\>** as both the workspace location and exported location, then click **OK**.
+7. With Vivado SDK opened, wait for the hardware platform exported by Vivado to be imported.
+8. In the toolbar at the top of the SDK window, select **File -> New -> Application Project**.
+9. Fill out the fields in the first page of the New Application Project Wizard as in the table below. Most of the listed values will be the wizard's defaults, but are included in the table for completeness.
 
 | Setting                                 | Value                                              |
 | --------------------------------------- | -------------------------------------------------- |
@@ -48,30 +49,47 @@ Demo Setup
 | Target Software: Language               | C++                                                |
 | Target Software: Board Support Package  | Create New (ZedBoard_FMC_Pcam_Adapter_DEMO_bsp)    |
 
-9. Click **Next**.
-10. From the list of template applications, select "Empty Application", then click **Finish**.
-11. In the Project Explorer panel to the left of the SDK window, expand the new application project (named "ZedBoard_FMC_Pcam_Adapter_DEMO").
-12. Right click on the "src" subdirectory of the application project and select **Import**.
-13. In the "Select an import wizard" pane of the window that pops up, expand **General** and select **File System**. Then click **Next**.
-14. Fill out the fields of the "File system" screen as in the table below. Most of the listed values will be the defaults, but are included in the table for completeness.
+10. Click **Next**.
+11. From the list of template applications, select "Empty Application", then click **Finish**.
+12. In the Project Explorer panel to the left of the SDK window, expand the new application project (named "ZedBoard_FMC_Pcam_Adapter_DEMO").
+13. Right click on the "src" subdirectory of the application project and select **Import**.
+14. In the "Select an import wizard" pane of the window that pops up, expand **General** and select **File System**. Then click **Next**.
+15. Fill out the fields of the "File system" screen as in the table below. Most of the listed values will be the defaults, but are included in the table for completeness.
 
 | Setting                                                | Value                                                                     |
 | -                                                      | -                                                                         |
 | From directory                                         | \<archive extracted location\>/sdk_appsrc/ZedBoard_FMC_Pcam_Adapter_DEMO  |
-| Files to import pane: pcam_vdmi_hdmi                   | Checked box                                                               |
+| Files to import pane: ZedBoard_FMC_Pcam_Adapter_DEMO   | Checked box                                                               |
 | Into folder                                            | ZedBoard_FMC_Pcam_Adapter_DEMO/src                                        |
 | Options: Overwrite existing resources without warning  | Checked box                                                               |
 | Options: Create top-level folder                       | Unchecked box                                                             |
 
-15. Click **Finish**.
+16. Click **Finish**.
 
 **Note**: Users have reported some custom IP drivers missing from the hardware platform. Check the system_wrapper_hw_platform_0 project's drivers folder to ensure that the <code>MIPI_CSI_2_RX_v1_0</code>, <code>MIPI_D_PHY_RX_v1_0</code>, and <code>video_scaler_v1_0</code> drivers are present. If any of them are missing, they must be manually added to the workspace's software repositories. Click **Xilinx -> Repositories** in the menu bar at the top of the SDK window. For each missing driver, add a **New** local repository to the workspace, selecting "\<archive extracted location\>/vivado_proj/\<project name\>.ipdefs/vivado-library/ip/\<missing IP name\>/driver" as the repository directory. For more information, see [this thread](https://forums.xilinx.com/t5/Embedded-Development-Tools/Custom-IP-driver-not-present-on-BSP/td-p/902331) on the Xilinx Forums.
+17. Right click on **Project Explorer->ZedBoard_FMC_Pcam_Adapter_DEMO_bsp** and click on **Board Support Package Settings**. There you should select drivers and make sure that the components lsited below have the needed drivers selected:
 
-16. Open a serial terminal application (such as TeraTerm) and connect it to the ZedBoard serial port, using a baud rate of 115200.
-17. In the toolbar at the top of the SDK window, select **Xilinx -> Program FPGA**. Leave all fields as their defaults and click "Program".
-18. In the Project Explorer pane, right click on the "ZedBoard_FMC_Pcam_Adapter_DEMO" application project and select "Run As -> Launch on Hardware (System Debugger)".
-19. The application will now be running on the ZedBoard. If there are any unconnected cameras, the serial interface should print a message which signals the improper initialization. 
-20. If needed, create a first-stage bootloader (FSBL) using **File -> New -> Application Project** and choosing template **Zynq FSBL**.
+| Component                               | Component Type                  | Driver                 |
+| --------------------------------------- | --------------------------------|----------------------- |
+| MIPI_CSI_RX_A                           | MIPI_CSI_2_RX                   | MIPI_CSI_2_RX          |
+| MIPI_CSI_RX_B                           | MIPI_CSI_2_RX                   | MIPI_CSI_2_RX          |
+| MIPI_CSI_RX_C                           | MIPI_CSI_2_RX                   | MIPI_CSI_2_RX          |
+| MIPI_CSI_RX_D                           | MIPI_CSI_2_RX                   | MIPI_CSI_2_RX          |
+| MIPI_D_PHY_RX_A                         | MIPI_D_PHY_RX                   | MIPI_D_PHY_RX          |
+| MIPI_D_PHY_RX_B                         | MIPI_D_PHY_RX                   | MIPI_D_PHY_RX          |
+| MIPI_D_PHY_RX_C                         | MIPI_D_PHY_RX                   | MIPI_D_PHY_RX          |
+| MIPI_D_PHY_RX_D                         | MIPI_D_PHY_RX                   | MIPI_D_PHY_RX          |
+| video_scaler_a                          | video_scaler                    | video_scaler           |
+| video_scaler_b                          | video_scaler                    | video_scaler           |
+| video_scaler_c                          | video_scaler                    | video_scaler           |
+| video_scaler_d                          | video_scaler                    | video_scaler           |
+
+18.Right click on **Project Explorer -> ZedBoard_FMC_Pcam_Adapter_DEMO** and click on **Properties**. There, you should select **C/C++ General -> Paths and Symbols**. Click on **Includes->Add** and write "/${ProjName}/src" then click **OK**. After that, click **Apply** and wait for the program to build. 
+19. Open a serial terminal application (such as TeraTerm) and connect it to the ZedBoard serial port, using a baud rate of 115200.
+20. In the toolbar at the top of the SDK window, select **Xilinx -> Program FPGA**. Leave all fields as their defaults and click "Program".
+21. In the Project Explorer pane, right click on the "ZedBoard_FMC_Pcam_Adapter_DEMO" application project and select "Run As -> Launch on Hardware (System Debugger)".
+22. The application will now be running on the ZedBoard. If there are any unconnected cameras, the serial interface should print a message which signals the improper initialization. 
+23. If needed, create a first-stage bootloader (FSBL) using **File -> New -> Application Project** and choosing template **Zynq FSBL**.
 
 
 Next Steps
