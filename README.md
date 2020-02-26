@@ -85,7 +85,7 @@ Demo Setup
 | video_scaler_c                          | video_scaler                    | video_scaler           |
 | video_scaler_d                          | video_scaler                    | video_scaler           |
 
-18. Right click on **Project Explorer -> ZedBoard_FMC_Pcam_Adapter_DEMO** and click on **Properties**. There, you should select **C/C++ General -> Paths and Symbols**. Click on **Includes->Add** and write "/${ProjName}/src" then click **OK**. After that, click **Apply** and wait for the program to build. 
+18. Right click on **Project Explorer -> ZedBoard_FMC_Pcam_Adapter_DEMO** and click on **Properties**. There, you should select **C/C++ General -> Paths and Symbols**. Click on **Includes->Add** and write "/${ProjName}/src", select the **Is a workspace path** box, then click **OK**. After that, click **Apply** and wait for the program to build. 
 19. Open a serial terminal application (such as TeraTerm) and connect it to the ZedBoard serial port, using a baud rate of 115200.
 20. In the toolbar at the top of the SDK window, select **Xilinx -> Program FPGA**. Leave all fields as their defaults and click "Program".
 21. In the Project Explorer pane, right click on the "ZedBoard_FMC_Pcam_Adapter_DEMO" application project and select "Run As -> Launch on Hardware (System Debugger)".
