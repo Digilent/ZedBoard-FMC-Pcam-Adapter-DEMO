@@ -20,7 +20,7 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2018.2
+set scripts_vivado_version 2019.1
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
@@ -133,7 +133,7 @@ if { $bCheckIPs == 1 } {
    set list_check_ips "\ 
 digilentinc.com:user:AXI_BayerToRGB:1.0\
 digilentinc.com:user:AXI_GammaCorrection:1.0\
-digilentinc.com:ip:MIPI_CSI_2_RX:1.1\
+digilentinc.com:ip:MIPI_CSI_2_RX:1.2\
 digilentinc.com:ip:MIPI_D_PHY_RX:1.3\
 xilinx.com:ip:axi_gpio:2.0\
 xilinx.com:ip:axi_vdma:6.3\
@@ -235,18 +235,28 @@ proc create_root_design { parentCell } {
 
   # Create interface ports
   set DDR [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddrx_rtl:1.0 DDR ]
+
   set FIXED_IO [ create_bd_intf_port -mode Master -vlnv xilinx.com:display_processing_system7:fixedio_rtl:1.0 FIXED_IO ]
+
   set cam_iic [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:iic_rtl:1.0 cam_iic ]
+
   set cam_pwup [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 cam_pwup ]
+
   set cama_bta [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 cama_bta ]
+
   set cama_gpio [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 cama_gpio ]
+
   set dphy_a_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_a_hs_clock ]
   set_property -dict [ list \
    CONFIG.FREQ_HZ {336000000} \
    ] $dphy_a_hs_clock
+
   set dphy_b_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_b_hs_clock ]
+
   set dphy_c_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_c_hs_clock ]
+
   set dphy_d_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_d_hs_clock ]
+
 
   # Create ports
   set cam_gpio_dir [ create_bd_port -dir O -from 0 -to 0 cam_gpio_dir ]
@@ -317,26 +327,26 @@ proc create_root_design { parentCell } {
    }
   
   # Create instance: MIPI_CSI_2_RX_A, and set properties
-  set MIPI_CSI_2_RX_A [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.1 MIPI_CSI_2_RX_A ]
+  set MIPI_CSI_2_RX_A [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.2 MIPI_CSI_2_RX_A ]
   set_property -dict [ list \
    CONFIG.kDebug {false} \
    CONFIG.kGenerateAXIL {true} \
  ] $MIPI_CSI_2_RX_A
 
   # Create instance: MIPI_CSI_2_RX_B, and set properties
-  set MIPI_CSI_2_RX_B [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.1 MIPI_CSI_2_RX_B ]
+  set MIPI_CSI_2_RX_B [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.2 MIPI_CSI_2_RX_B ]
   set_property -dict [ list \
    CONFIG.kGenerateAXIL {true} \
  ] $MIPI_CSI_2_RX_B
 
   # Create instance: MIPI_CSI_2_RX_C, and set properties
-  set MIPI_CSI_2_RX_C [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.1 MIPI_CSI_2_RX_C ]
+  set MIPI_CSI_2_RX_C [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.2 MIPI_CSI_2_RX_C ]
   set_property -dict [ list \
    CONFIG.kGenerateAXIL {true} \
  ] $MIPI_CSI_2_RX_C
 
   # Create instance: MIPI_CSI_2_RX_D, and set properties
-  set MIPI_CSI_2_RX_D [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.1 MIPI_CSI_2_RX_D ]
+  set MIPI_CSI_2_RX_D [ create_bd_cell -type ip -vlnv digilentinc.com:ip:MIPI_CSI_2_RX:1.2 MIPI_CSI_2_RX_D ]
   set_property -dict [ list \
    CONFIG.kGenerateAXIL {true} \
  ] $MIPI_CSI_2_RX_D
@@ -1673,6 +1683,7 @@ proc create_root_design { parentCell } {
   # Restore current instance
   current_bd_instance $oldCurInst
 
+  validate_bd_design
   save_bd_design
 }
 # End of create_root_design()
