@@ -252,10 +252,19 @@ proc create_root_design { parentCell } {
    ] $dphy_a_hs_clock
 
   set dphy_b_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_b_hs_clock ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {336000000} \
+   ] $dphy_b_hs_clock
 
   set dphy_c_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_c_hs_clock ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {336000000} \
+   ] $dphy_c_hs_clock
 
   set dphy_d_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_d_hs_clock ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {336000000} \
+   ] $dphy_d_hs_clock
 
 
   # Create ports
