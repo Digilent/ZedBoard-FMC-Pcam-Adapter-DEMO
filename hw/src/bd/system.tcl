@@ -20,12 +20,12 @@ set script_folder [_tcl::get_script_folder]
 ################################################################
 # Check if script is running in correct Vivado version.
 ################################################################
-set scripts_vivado_version 2019.1
+set scripts_vivado_version 2020.1
 set current_vivado_version [version -short]
 
 if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
    puts ""
-   catch {common::send_msg_id "BD_TCL-109" "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
+   catch {common::send_gid_msg -ssname BD::TCL -id 2041 -severity "ERROR" "This script was generated using Vivado <$scripts_vivado_version> and is being run in <$current_vivado_version> of Vivado. Please run the script in Vivado <$scripts_vivado_version> then open the design in Vivado <$current_vivado_version>. Upgrade the design by running \"Tools => Report => Report IP Status...\", then run write_bd_tcl to create an updated script."}
 
    return 1
 }
@@ -84,10 +84,10 @@ if { ${design_name} eq "" } {
    #    4): Current design opened AND is empty AND names diff; design_name exists in project.
 
    if { $cur_design ne $design_name } {
-      common::send_msg_id "BD_TCL-001" "INFO" "Changing value of <design_name> from <$design_name> to <$cur_design> since current design is empty."
+      common::send_gid_msg -ssname BD::TCL -id 2001 -severity "INFO" "Changing value of <design_name> from <$design_name> to <$cur_design> since current design is empty."
       set design_name [get_property NAME $cur_design]
    }
-   common::send_msg_id "BD_TCL-002" "INFO" "Constructing design in IPI design <$cur_design>..."
+   common::send_gid_msg -ssname BD::TCL -id 2002 -severity "INFO" "Constructing design in IPI design <$cur_design>..."
 
 } elseif { ${cur_design} ne "" && $list_cells ne "" && $cur_design eq $design_name } {
    # USE CASES:
@@ -108,19 +108,19 @@ if { ${design_name} eq "" } {
    #    8) No opened design, design_name not in project.
    #    9) Current opened design, has components, but diff names, design_name not in project.
 
-   common::send_msg_id "BD_TCL-003" "INFO" "Currently there is no design <$design_name> in project, so creating one..."
+   common::send_gid_msg -ssname BD::TCL -id 2003 -severity "INFO" "Currently there is no design <$design_name> in project, so creating one..."
 
    create_bd_design $design_name
 
-   common::send_msg_id "BD_TCL-004" "INFO" "Making design <$design_name> as current_bd_design."
+   common::send_gid_msg -ssname BD::TCL -id 2004 -severity "INFO" "Making design <$design_name> as current_bd_design."
    current_bd_design $design_name
 
 }
 
-common::send_msg_id "BD_TCL-005" "INFO" "Currently the variable <design_name> is equal to \"$design_name\"."
+common::send_gid_msg -ssname BD::TCL -id 2005 -severity "INFO" "Currently the variable <design_name> is equal to \"$design_name\"."
 
 if { $nRet != 0 } {
-   catch {common::send_msg_id "BD_TCL-114" "ERROR" $errMsg}
+   catch {common::send_gid_msg -ssname BD::TCL -id 2006 -severity "ERROR" $errMsg}
    return $nRet
 }
 
@@ -144,12 +144,12 @@ digilentinc.com:ip:rgb2vga:1.0\
 xilinx.com:ip:proc_sys_reset:5.0\
 xilinx.com:ip:v_axi4s_vid_out:4.0\
 digilentinc.com:video:video_scaler:1.0\
-xilinx.com:ip:v_tc:6.1\
+xilinx.com:ip:v_tc:6.2\
 xilinx.com:ip:xlconcat:2.1\
 "
 
    set list_ips_missing ""
-   common::send_msg_id "BD_TCL-006" "INFO" "Checking if the following IPs exist in the project's IP catalog: $list_check_ips ."
+   common::send_gid_msg -ssname BD::TCL -id 2011 -severity "INFO" "Checking if the following IPs exist in the project's IP catalog: $list_check_ips ."
 
    foreach ip_vlnv $list_check_ips {
       set ip_obj [get_ipdefs -all $ip_vlnv]
@@ -159,7 +159,7 @@ xilinx.com:ip:xlconcat:2.1\
    }
 
    if { $list_ips_missing ne "" } {
-      catch {common::send_msg_id "BD_TCL-115" "ERROR" "The following IPs are not found in the IP Catalog:\n  $list_ips_missing\n\nResolution: Please add the repository containing the IP(s) to the project." }
+      catch {common::send_gid_msg -ssname BD::TCL -id 2012 -severity "ERROR" "The following IPs are not found in the IP Catalog:\n  $list_ips_missing\n\nResolution: Please add the repository containing the IP(s) to the project." }
       set bCheckIPsPassed 0
    }
 
@@ -175,7 +175,7 @@ DVIClocking\
 "
 
    set list_mods_missing ""
-   common::send_msg_id "BD_TCL-006" "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
+   common::send_gid_msg -ssname BD::TCL -id 2020 -severity "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
 
    foreach mod_vlnv $list_check_mods {
       if { [can_resolve_reference $mod_vlnv] == 0 } {
@@ -184,14 +184,14 @@ DVIClocking\
    }
 
    if { $list_mods_missing ne "" } {
-      catch {common::send_msg_id "BD_TCL-115" "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
-      common::send_msg_id "BD_TCL-008" "INFO" "Please add source files for the missing module(s) above."
+      catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
+      common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
       set bCheckIPsPassed 0
    }
 }
 
 if { $bCheckIPsPassed != 1 } {
-  common::send_msg_id "BD_TCL-1003" "WARNING" "Will not continue with creation of design due to the error(s) above."
+  common::send_gid_msg -ssname BD::TCL -id 2023 -severity "WARNING" "Will not continue with creation of design due to the error(s) above."
   return 3
 }
 
@@ -215,14 +215,14 @@ proc create_root_design { parentCell } {
   # Get object for parentCell
   set parentObj [get_bd_cells $parentCell]
   if { $parentObj == "" } {
-     catch {common::send_msg_id "BD_TCL-100" "ERROR" "Unable to find parent cell <$parentCell>!"}
+     catch {common::send_gid_msg -ssname BD::TCL -id 2090 -severity "ERROR" "Unable to find parent cell <$parentCell>!"}
      return
   }
 
   # Make sure parentObj is hier blk
   set parentType [get_property TYPE $parentObj]
   if { $parentType ne "hier" } {
-     catch {common::send_msg_id "BD_TCL-101" "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
+     catch {common::send_gid_msg -ssname BD::TCL -id 2091 -severity "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
      return
   }
 
@@ -252,10 +252,19 @@ proc create_root_design { parentCell } {
    ] $dphy_a_hs_clock
 
   set dphy_b_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_b_hs_clock ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {336000000} \
+   ] $dphy_b_hs_clock
 
   set dphy_c_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_c_hs_clock ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {336000000} \
+   ] $dphy_c_hs_clock
 
   set dphy_d_hs_clock [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 dphy_d_hs_clock ]
+  set_property -dict [ list \
+   CONFIG.FREQ_HZ {336000000} \
+   ] $dphy_d_hs_clock
 
 
   # Create ports
@@ -319,10 +328,10 @@ proc create_root_design { parentCell } {
   set block_name DVIClocking
   set block_cell_name DVIClocking_0
   if { [catch {set DVIClocking_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
-     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
    } elseif { $DVIClocking_0 eq "" } {
-     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
      return 1
    }
   
@@ -1477,20 +1486,20 @@ proc create_root_design { parentCell } {
   set video_scaler_d [ create_bd_cell -type ip -vlnv digilentinc.com:video:video_scaler:1.0 video_scaler_d ]
 
   # Create instance: vtg, and set properties
-  set vtg [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tc:6.1 vtg ]
+  set vtg [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tc:6.2 vtg ]
   set_property -dict [ list \
-   CONFIG.GEN_F0_VBLANK_HEND {1280} \
-   CONFIG.GEN_F0_VBLANK_HSTART {1280} \
+   CONFIG.GEN_F0_VBLANK_HEND {640} \
+   CONFIG.GEN_F0_VBLANK_HSTART {640} \
    CONFIG.GEN_F0_VFRAME_SIZE {750} \
-   CONFIG.GEN_F0_VSYNC_HEND {1280} \
-   CONFIG.GEN_F0_VSYNC_HSTART {1280} \
+   CONFIG.GEN_F0_VSYNC_HEND {695} \
+   CONFIG.GEN_F0_VSYNC_HSTART {640} \
    CONFIG.GEN_F0_VSYNC_VEND {729} \
    CONFIG.GEN_F0_VSYNC_VSTART {724} \
-   CONFIG.GEN_F1_VBLANK_HEND {1280} \
-   CONFIG.GEN_F1_VBLANK_HSTART {1280} \
+   CONFIG.GEN_F1_VBLANK_HEND {640} \
+   CONFIG.GEN_F1_VBLANK_HSTART {640} \
    CONFIG.GEN_F1_VFRAME_SIZE {750} \
-   CONFIG.GEN_F1_VSYNC_HEND {1280} \
-   CONFIG.GEN_F1_VSYNC_HSTART {1280} \
+   CONFIG.GEN_F1_VSYNC_HEND {695} \
+   CONFIG.GEN_F1_VSYNC_HSTART {695} \
    CONFIG.GEN_F1_VSYNC_VEND {729} \
    CONFIG.GEN_F1_VSYNC_VSTART {724} \
    CONFIG.GEN_HACTIVE_SIZE {1280} \
@@ -1637,9 +1646,9 @@ proc create_root_design { parentCell } {
   connect_bd_net -net rgb2vga_0_vga_pRed [get_bd_ports vga_pRed] [get_bd_pins rgb2vga_0/vga_pRed]
   connect_bd_net -net rgb2vga_0_vga_pVSync [get_bd_ports vga_pVSync] [get_bd_pins rgb2vga_0/vga_pVSync]
   connect_bd_net -net rst_clk_wiz_0_50M_interconnect_aresetn [get_bd_pins axi_mem_intercon/ARESETN] [get_bd_pins axi_mem_intercon_1/ARESETN] [get_bd_pins ps7_0_axi_periph/ARESETN] [get_bd_pins rst_clk_wiz_0_50M/interconnect_aresetn]
-  connect_bd_net -net rst_clk_wiz_0_50M_peripheral_aresetn [get_bd_pins AXI_BayerToRGB_A/sStreamReset_n] [get_bd_pins AXI_BayerToRGB_B/sStreamReset_n] [get_bd_pins AXI_BayerToRGB_C/sStreamReset_n] [get_bd_pins AXI_BayerToRGB_D/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_A/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_A/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_B/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_B/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_C/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_C/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_D/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_D/sStreamReset_n] [get_bd_pins MIPI_CSI_2_RX_A/s_axi_lite_aresetn] [get_bd_pins MIPI_CSI_2_RX_B/s_axi_lite_aresetn] [get_bd_pins MIPI_CSI_2_RX_C/s_axi_lite_aresetn] [get_bd_pins MIPI_CSI_2_RX_D/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_A/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_B/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_C/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_D/s_axi_lite_aresetn] [get_bd_pins axi_cama_bta/s_axi_aresetn] [get_bd_pins axi_cama_gpio/s_axi_aresetn] [get_bd_pins axi_mem_intercon/M00_ARESETN] [get_bd_pins axi_mem_intercon/S00_ARESETN] [get_bd_pins axi_mem_intercon_1/M00_ARESETN] [get_bd_pins axi_mem_intercon_1/S00_ARESETN] [get_bd_pins axi_mem_intercon_1/S01_ARESETN] [get_bd_pins axi_mem_intercon_1/S02_ARESETN] [get_bd_pins axi_mem_intercon_1/S03_ARESETN] [get_bd_pins axi_vdma_a/axi_resetn] [get_bd_pins axi_vdma_b/axi_resetn] [get_bd_pins axi_vdma_c/axi_resetn] [get_bd_pins axi_vdma_d/axi_resetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/M04_ARESETN] [get_bd_pins ps7_0_axi_periph/M05_ARESETN] [get_bd_pins ps7_0_axi_periph/M07_ARESETN] [get_bd_pins ps7_0_axi_periph/M08_ARESETN] [get_bd_pins ps7_0_axi_periph/M09_ARESETN] [get_bd_pins ps7_0_axi_periph/M10_ARESETN] [get_bd_pins ps7_0_axi_periph/M11_ARESETN] [get_bd_pins ps7_0_axi_periph/M12_ARESETN] [get_bd_pins ps7_0_axi_periph/M13_ARESETN] [get_bd_pins ps7_0_axi_periph/M14_ARESETN] [get_bd_pins ps7_0_axi_periph/M15_ARESETN] [get_bd_pins ps7_0_axi_periph/M19_ARESETN] [get_bd_pins ps7_0_axi_periph/M20_ARESETN] [get_bd_pins ps7_0_axi_periph/M21_ARESETN] [get_bd_pins ps7_0_axi_periph/M22_ARESETN] [get_bd_pins ps7_0_axi_periph/M23_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_clk_wiz_0_50M/peripheral_aresetn] [get_bd_pins v_axi4s_vid_out_0/aresetn] [get_bd_pins video_dynclk/s_axi_aresetn] [get_bd_pins video_scaler_a/ap_rst_n] [get_bd_pins video_scaler_b/ap_rst_n] [get_bd_pins video_scaler_c/ap_rst_n] [get_bd_pins video_scaler_d/ap_rst_n] [get_bd_pins vtg/s_axi_aresetn]
+  connect_bd_net -net rst_clk_wiz_0_50M_peripheral_aresetn [get_bd_pins AXI_GammaCorrection_A/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_B/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_C/aAxiLiteReset_n] [get_bd_pins AXI_GammaCorrection_D/aAxiLiteReset_n] [get_bd_pins MIPI_CSI_2_RX_A/s_axi_lite_aresetn] [get_bd_pins MIPI_CSI_2_RX_B/s_axi_lite_aresetn] [get_bd_pins MIPI_CSI_2_RX_C/s_axi_lite_aresetn] [get_bd_pins MIPI_CSI_2_RX_D/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_A/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_B/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_C/s_axi_lite_aresetn] [get_bd_pins MIPI_D_PHY_RX_D/s_axi_lite_aresetn] [get_bd_pins axi_cama_bta/s_axi_aresetn] [get_bd_pins axi_cama_gpio/s_axi_aresetn] [get_bd_pins axi_mem_intercon/M00_ARESETN] [get_bd_pins axi_mem_intercon/S00_ARESETN] [get_bd_pins axi_mem_intercon_1/M00_ARESETN] [get_bd_pins axi_mem_intercon_1/S00_ARESETN] [get_bd_pins axi_mem_intercon_1/S01_ARESETN] [get_bd_pins axi_mem_intercon_1/S02_ARESETN] [get_bd_pins axi_mem_intercon_1/S03_ARESETN] [get_bd_pins axi_vdma_a/axi_resetn] [get_bd_pins axi_vdma_b/axi_resetn] [get_bd_pins axi_vdma_c/axi_resetn] [get_bd_pins axi_vdma_d/axi_resetn] [get_bd_pins ps7_0_axi_periph/M00_ARESETN] [get_bd_pins ps7_0_axi_periph/M01_ARESETN] [get_bd_pins ps7_0_axi_periph/M02_ARESETN] [get_bd_pins ps7_0_axi_periph/M03_ARESETN] [get_bd_pins ps7_0_axi_periph/M04_ARESETN] [get_bd_pins ps7_0_axi_periph/M05_ARESETN] [get_bd_pins ps7_0_axi_periph/M07_ARESETN] [get_bd_pins ps7_0_axi_periph/M08_ARESETN] [get_bd_pins ps7_0_axi_periph/M09_ARESETN] [get_bd_pins ps7_0_axi_periph/M10_ARESETN] [get_bd_pins ps7_0_axi_periph/M11_ARESETN] [get_bd_pins ps7_0_axi_periph/M12_ARESETN] [get_bd_pins ps7_0_axi_periph/M13_ARESETN] [get_bd_pins ps7_0_axi_periph/M14_ARESETN] [get_bd_pins ps7_0_axi_periph/M15_ARESETN] [get_bd_pins ps7_0_axi_periph/M19_ARESETN] [get_bd_pins ps7_0_axi_periph/M20_ARESETN] [get_bd_pins ps7_0_axi_periph/M21_ARESETN] [get_bd_pins ps7_0_axi_periph/M22_ARESETN] [get_bd_pins ps7_0_axi_periph/M23_ARESETN] [get_bd_pins ps7_0_axi_periph/S00_ARESETN] [get_bd_pins rst_clk_wiz_0_50M/peripheral_aresetn] [get_bd_pins v_axi4s_vid_out_0/aresetn] [get_bd_pins video_dynclk/s_axi_aresetn] [get_bd_pins vtg/s_axi_aresetn]
   connect_bd_net -net rst_clk_wiz_0_50M_peripheral_reset [get_bd_pins MIPI_D_PHY_RX_A/aRst] [get_bd_pins MIPI_D_PHY_RX_B/aRst] [get_bd_pins MIPI_D_PHY_RX_C/aRst] [get_bd_pins MIPI_D_PHY_RX_D/aRst] [get_bd_pins rst_clk_wiz_0_50M/peripheral_reset]
-  connect_bd_net -net rst_system_150M_peripheral_aresetn [get_bd_pins ps7_0_axi_periph/M06_ARESETN] [get_bd_pins ps7_0_axi_periph/M16_ARESETN] [get_bd_pins ps7_0_axi_periph/M17_ARESETN] [get_bd_pins ps7_0_axi_periph/M18_ARESETN] [get_bd_pins rst_system_150M/peripheral_aresetn]
+  connect_bd_net -net rst_system_150M_peripheral_aresetn [get_bd_pins AXI_BayerToRGB_A/sStreamReset_n] [get_bd_pins AXI_BayerToRGB_B/sStreamReset_n] [get_bd_pins AXI_BayerToRGB_C/sStreamReset_n] [get_bd_pins AXI_BayerToRGB_D/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_A/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_B/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_C/sStreamReset_n] [get_bd_pins AXI_GammaCorrection_D/sStreamReset_n] [get_bd_pins ps7_0_axi_periph/M06_ARESETN] [get_bd_pins ps7_0_axi_periph/M16_ARESETN] [get_bd_pins ps7_0_axi_periph/M17_ARESETN] [get_bd_pins ps7_0_axi_periph/M18_ARESETN] [get_bd_pins rst_system_150M/peripheral_aresetn] [get_bd_pins video_scaler_a/ap_rst_n] [get_bd_pins video_scaler_b/ap_rst_n] [get_bd_pins video_scaler_c/ap_rst_n] [get_bd_pins video_scaler_d/ap_rst_n]
   connect_bd_net -net rst_vid_clk_dyn_peripheral_aresetn [get_bd_pins rst_vid_clk_dyn/peripheral_aresetn] [get_bd_pins vtg/resetn]
   connect_bd_net -net rst_vid_clk_dyn_peripheral_reset [get_bd_pins rst_vid_clk_dyn/peripheral_reset] [get_bd_pins v_axi4s_vid_out_0/vid_io_out_reset]
   connect_bd_net -net s_axil_clk_50 [get_bd_pins AXI_GammaCorrection_A/AxiLiteClk] [get_bd_pins AXI_GammaCorrection_B/AxiLiteClk] [get_bd_pins AXI_GammaCorrection_C/AxiLiteClk] [get_bd_pins AXI_GammaCorrection_D/AxiLiteClk] [get_bd_pins MIPI_CSI_2_RX_A/s_axi_lite_aclk] [get_bd_pins MIPI_CSI_2_RX_B/s_axi_lite_aclk] [get_bd_pins MIPI_CSI_2_RX_C/s_axi_lite_aclk] [get_bd_pins MIPI_CSI_2_RX_D/s_axi_lite_aclk] [get_bd_pins MIPI_D_PHY_RX_A/s_axi_lite_aclk] [get_bd_pins MIPI_D_PHY_RX_B/s_axi_lite_aclk] [get_bd_pins MIPI_D_PHY_RX_C/s_axi_lite_aclk] [get_bd_pins MIPI_D_PHY_RX_D/s_axi_lite_aclk] [get_bd_pins axi_cama_bta/s_axi_aclk] [get_bd_pins axi_cama_gpio/s_axi_aclk] [get_bd_pins axi_vdma_a/s_axi_lite_aclk] [get_bd_pins axi_vdma_b/s_axi_lite_aclk] [get_bd_pins axi_vdma_c/s_axi_lite_aclk] [get_bd_pins axi_vdma_d/s_axi_lite_aclk] [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins processing_system7_0/M_AXI_GP0_ACLK] [get_bd_pins ps7_0_axi_periph/ACLK] [get_bd_pins ps7_0_axi_periph/M00_ACLK] [get_bd_pins ps7_0_axi_periph/M01_ACLK] [get_bd_pins ps7_0_axi_periph/M02_ACLK] [get_bd_pins ps7_0_axi_periph/M03_ACLK] [get_bd_pins ps7_0_axi_periph/M04_ACLK] [get_bd_pins ps7_0_axi_periph/M05_ACLK] [get_bd_pins ps7_0_axi_periph/M07_ACLK] [get_bd_pins ps7_0_axi_periph/M08_ACLK] [get_bd_pins ps7_0_axi_periph/M09_ACLK] [get_bd_pins ps7_0_axi_periph/M10_ACLK] [get_bd_pins ps7_0_axi_periph/M11_ACLK] [get_bd_pins ps7_0_axi_periph/M12_ACLK] [get_bd_pins ps7_0_axi_periph/M13_ACLK] [get_bd_pins ps7_0_axi_periph/M14_ACLK] [get_bd_pins ps7_0_axi_periph/M15_ACLK] [get_bd_pins ps7_0_axi_periph/M19_ACLK] [get_bd_pins ps7_0_axi_periph/M20_ACLK] [get_bd_pins ps7_0_axi_periph/M21_ACLK] [get_bd_pins ps7_0_axi_periph/M22_ACLK] [get_bd_pins ps7_0_axi_periph/M23_ACLK] [get_bd_pins ps7_0_axi_periph/S00_ACLK] [get_bd_pins rst_clk_wiz_0_50M/slowest_sync_clk] [get_bd_pins video_dynclk/s_axi_aclk] [get_bd_pins vtg/s_axi_aclk]
@@ -1649,35 +1658,35 @@ proc create_root_design { parentCell } {
   connect_bd_net -net xlconcat_1_dout [get_bd_pins axi_vdma_a/mm2s_frame_ptr_in] [get_bd_pins xlconcat_1/dout]
 
   # Create address segments
-  create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_vdma_a/Data_MM2S] [get_bd_addr_segs processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM] SEG_processing_system7_0_HP0_DDR_LOWOCM
-  create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_vdma_a/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] SEG_processing_system7_0_HP2_DDR_LOWOCM
-  create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_vdma_b/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] SEG_processing_system7_0_HP2_DDR_LOWOCM
-  create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_vdma_c/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] SEG_processing_system7_0_HP2_DDR_LOWOCM
-  create_bd_addr_seg -range 0x20000000 -offset 0x00000000 [get_bd_addr_spaces axi_vdma_d/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] SEG_processing_system7_0_HP2_DDR_LOWOCM
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C40000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_A/AXI_Lite_Reg_Intf/Reg] SEG_AXI_GammaCorrection_0_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C50000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_B/AXI_Lite_Reg_Intf/Reg] SEG_AXI_GammaCorrection_1_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C60000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_D/AXI_Lite_Reg_Intf/Reg] SEG_AXI_GammaCorrection_2_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C70000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_C/AXI_Lite_Reg_Intf/Reg] SEG_AXI_GammaCorrection_3_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C30000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_A/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_CSI_2_RX_0_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43D80000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_B/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_CSI_2_RX_1_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43D90000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_C/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_CSI_2_RX_2_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43DA0000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_D/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_CSI_2_RX_3_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C20000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_A/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_D_PHY_RX_0_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43DB0000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_B/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_D_PHY_RX_1_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43DC0000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_C/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_D_PHY_RX_2_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43DD0000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_D/S_AXI_LITE/S_AXI_LITE_reg] SEG_MIPI_D_PHY_RX_3_S_AXI_LITE_reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x41210000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_cama_bta/S_AXI/Reg] SEG_axi_cama_bta_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x41200000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_cama_gpio/S_AXI/Reg] SEG_axi_cama_gpio_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43000000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_a/S_AXI_LITE/Reg] SEG_axi_vdma_0_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43010000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_c/S_AXI_LITE/Reg] SEG_axi_vdma_1_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43020000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_b/S_AXI_LITE/Reg] SEG_axi_vdma_2_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43030000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_d/S_AXI_LITE/Reg] SEG_axi_vdma_3_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C00000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_dynclk/s_axi_lite/Reg] SEG_video_dynclk_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C80000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_a/s_axi_ctrl/Reg] SEG_video_scaler_0_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C90000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_b/s_axi_ctrl/Reg] SEG_video_scaler_b_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43CB0000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_c/s_axi_ctrl/Reg] SEG_video_scaler_c_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43CA0000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_d/s_axi_ctrl/Reg] SEG_video_scaler_d_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0x43C10000 [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs vtg/ctrl/Reg] SEG_vtg_Reg
+  assign_bd_address -offset 0x00000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_vdma_a/Data_MM2S] [get_bd_addr_segs processing_system7_0/S_AXI_HP0/HP0_DDR_LOWOCM] -force
+  assign_bd_address -offset 0x00000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_vdma_a/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] -force
+  assign_bd_address -offset 0x00000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_vdma_b/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] -force
+  assign_bd_address -offset 0x00000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_vdma_c/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] -force
+  assign_bd_address -offset 0x00000000 -range 0x20000000 -target_address_space [get_bd_addr_spaces axi_vdma_d/Data_S2MM] [get_bd_addr_segs processing_system7_0/S_AXI_HP2/HP2_DDR_LOWOCM] -force
+  assign_bd_address -offset 0x43C00000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_A/AXI_Lite_Reg_Intf/Reg] -force
+  assign_bd_address -offset 0x43C10000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_B/AXI_Lite_Reg_Intf/Reg] -force
+  assign_bd_address -offset 0x43C20000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_C/AXI_Lite_Reg_Intf/Reg] -force
+  assign_bd_address -offset 0x43C30000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs AXI_GammaCorrection_D/AXI_Lite_Reg_Intf/Reg] -force
+  assign_bd_address -offset 0x43C40000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_A/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43C50000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_B/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43C60000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_C/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43C70000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_CSI_2_RX_D/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43C80000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_A/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43C90000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_B/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43CA0000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_C/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x43CB0000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs MIPI_D_PHY_RX_D/S_AXI_LITE/S_AXI_LITE_reg] -force
+  assign_bd_address -offset 0x41200000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_cama_bta/S_AXI/Reg] -force
+  assign_bd_address -offset 0x41210000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_cama_gpio/S_AXI/Reg] -force
+  assign_bd_address -offset 0x43000000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_a/S_AXI_LITE/Reg] -force
+  assign_bd_address -offset 0x43010000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_b/S_AXI_LITE/Reg] -force
+  assign_bd_address -offset 0x43020000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_c/S_AXI_LITE/Reg] -force
+  assign_bd_address -offset 0x43030000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs axi_vdma_d/S_AXI_LITE/Reg] -force
+  assign_bd_address -offset 0x43CC0000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_dynclk/s_axi_lite/Reg] -force
+  assign_bd_address -offset 0x43CD0000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_a/s_axi_ctrl/Reg] -force
+  assign_bd_address -offset 0x43CE0000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_b/s_axi_ctrl/Reg] -force
+  assign_bd_address -offset 0x43CF0000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_c/s_axi_ctrl/Reg] -force
+  assign_bd_address -offset 0x43D00000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs video_scaler_d/s_axi_ctrl/Reg] -force
+  assign_bd_address -offset 0x43D10000 -range 0x00010000 -target_address_space [get_bd_addr_spaces processing_system7_0/Data] [get_bd_addr_segs vtg/ctrl/Reg] -force
 
 
   # Restore current instance
