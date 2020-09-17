@@ -9,7 +9,7 @@ puts "INFO: Running $script"
 set domain_name [file tail $script_dir]
 
 # Modify these for custom domain/BSP settings
-set arch "64-bit"
+set arch "32-bit"
 set os "standalone"
 set proc "ps7_cortexa9_0"
 
