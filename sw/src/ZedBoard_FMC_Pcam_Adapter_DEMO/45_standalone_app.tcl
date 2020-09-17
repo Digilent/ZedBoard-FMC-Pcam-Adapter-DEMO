@@ -14,7 +14,7 @@ puts "INFO: Running $script"
 set app_name [file tail $script_dir]
 
 # Variables created by checkin.tcl
-set lang "c"
+set lang "c++"
 set domain "standalone_domain"
 set platform "hw_platform"
 set sysproj "ZedBoard_FMC_Pcam_Adapter_DEMO_system"
